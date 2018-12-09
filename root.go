@@ -45,4 +45,8 @@ var RootCommand = &cobra.Command{
 func init() {
 	cobra.OnInitialize()
 	RootCommand.Flags().BoolP("color", "c", false, "color")
+	RootCommand.Flags().BoolP("ipv4", "i", false, "color")
+	RootCommand.Flags().BoolP("cidr", "d", false, "color")
+	RootCommand.Flags().BoolP("bin", "b", false, "color")
+	RootCommand.Flags().BoolP("mask", "m", false, "color")
 }
