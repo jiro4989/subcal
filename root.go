@@ -5,6 +5,7 @@ import (
 	"net"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -43,7 +44,14 @@ func (ip IP) Format(sep string, colorFlag, ipv4Flag, cidrFlag, binFlag, maskFlag
 		arr = append(arr, fmt.Sprintf("%d", ip.CIDR))
 	}
 	if binFlag {
-		arr = append(arr, ip.Bin)
+		if colorFlag {
+			b1 := ip.Bin[:ip.CIDR]
+			b2 := ip.Bin[ip.CIDR:]
+			s := fmt.Sprintf("%s%s", color.RedString(b1), color.GreenString(b2))
+			arr = append(arr, s)
+		} else {
+			arr = append(arr, ip.Bin)
+		}
 	}
 	if maskFlag {
 		arr = append(arr, ip.Mask)
@@ -65,7 +73,7 @@ var RootCommand = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println(ip)
+			fmt.Println(ip.Format("\t", true, true, true, true, true))
 		}
 	},
 }
