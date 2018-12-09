@@ -35,6 +35,23 @@ func ParseCIDR(s string) (IP, error) {
 	return ip, nil
 }
 
+func Header(sep string, ipv4Flag, cidrFlag, binFlag, maskFlag bool) string {
+	var arr []string
+	if ipv4Flag {
+		arr = append(arr, "IPv4")
+	}
+	if cidrFlag {
+		arr = append(arr, "CIDR")
+	}
+	if binFlag {
+		arr = append(arr, "Bin")
+	}
+	if maskFlag {
+		arr = append(arr, "Mask")
+	}
+	return strings.Join(arr, sep)
+}
+
 func (ip IP) Format(sep string, colorFlag, ipv4Flag, cidrFlag, binFlag, maskFlag bool) string {
 	var arr []string
 	if ipv4Flag {
@@ -68,43 +85,50 @@ var RootCommand = &cobra.Command{
 			fmt.Println("stdin")
 			return
 		}
+
+		checkErr := func(err error) {
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		f := cmd.Flags()
+
+		sep, err := f.GetString("delimiter")
+		checkErr(err)
+
+		colorFlag, err := f.GetBool("color")
+		checkErr(err)
+
+		ipv4Flag, err := f.GetBool("ipv4")
+		checkErr(err)
+
+		cidrFlag, err := f.GetBool("cidr")
+		checkErr(err)
+
+		binFlag, err := f.GetBool("bin")
+		checkErr(err)
+
+		maskFlag, err := f.GetBool("mask")
+		checkErr(err)
+
+		if !ipv4Flag && !cidrFlag && !binFlag && !maskFlag {
+			ipv4Flag = true
+			cidrFlag = true
+			binFlag = true
+			maskFlag = true
+		}
+
+		headerFlag, err := f.GetBool("header")
+		checkErr(err)
+		if headerFlag {
+			fmt.Println(Header(sep, ipv4Flag, cidrFlag, binFlag, maskFlag))
+		}
+
 		for _, ipcidr := range args {
 			ip, err := ParseCIDR(ipcidr)
 			if err != nil {
 				panic(err)
-			}
-
-			checkErr := func(err error) {
-				if err != nil {
-					panic(err)
-				}
-			}
-
-			f := cmd.Flags()
-
-			sep, err := f.GetString("delimiter")
-			checkErr(err)
-
-			colorFlag, err := f.GetBool("color")
-			checkErr(err)
-
-			ipv4Flag, err := f.GetBool("ipv4")
-			checkErr(err)
-
-			cidrFlag, err := f.GetBool("cidr")
-			checkErr(err)
-
-			binFlag, err := f.GetBool("bin")
-			checkErr(err)
-
-			maskFlag, err := f.GetBool("mask")
-			checkErr(err)
-
-			if !ipv4Flag && !cidrFlag && !binFlag && !maskFlag {
-				ipv4Flag = true
-				cidrFlag = true
-				binFlag = true
-				maskFlag = true
 			}
 
 			fmt.Println(ip.Format(sep, colorFlag, ipv4Flag, cidrFlag, binFlag, maskFlag))
@@ -120,5 +144,5 @@ func init() {
 	RootCommand.Flags().BoolP("cidr", "r", false, "color")
 	RootCommand.Flags().BoolP("bin", "b", false, "color")
 	RootCommand.Flags().BoolP("mask", "m", false, "color")
-	RootCommand.Flags().BoolP("noheader", "H", false, "color")
+	RootCommand.Flags().BoolP("header", "H", false, "color")
 }
