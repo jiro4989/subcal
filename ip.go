@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
+	"net"
 	"strconv"
 	"strings"
 )
@@ -18,45 +20,19 @@ type CIDRAddress struct {
 
 // ToIPBin はIP/CIDRを2進数に変換する
 func ToCIDRAddress(s string) (CIDRAddress, error) {
-	var cidraddr CIDRAddress
-	ipcidr := strings.Split(s, "/")
-	if len(ipcidr) < 2 {
-		return cidraddr, errors.New("IP/CIDRが不正 ip/cidr=" + s)
+	ipv4Addr, ipv4Net, err := net.ParseCIDR(s)
+	if err != nil {
+		log.Fatal(err)
 	}
+	fmt.Println(ipv4Addr)
+	fmt.Println(ipv4Net)
 
-	ip, c := ipcidr[0], ipcidr[1]
-	cidr, err := strconv.Atoi(c)
-	if err != nil {
-		msg := fmt.Sprintf("CIDRが不正 cidr=%s, err=%v", c, err)
-		return cidraddr, errors.New(msg)
-	}
-	cidraddr.IPDec = ip
-	cidraddr.CIDR = cidr
+	l := len(ipv4Addr)
+	fmt.Printf("ipv4addr: %08b%08b%08b%08b\n", ipv4Addr[l-4], ipv4Addr[l-3], ipv4Addr[l-2], ipv4Addr[l-1])
+	fmt.Printf("IP:       %08b%08b%08b%08b\n", ipv4Net.IP[0], ipv4Net.IP[1], ipv4Net.IP[2], ipv4Net.IP[3])
+	fmt.Printf("Mask:     %08b%08b%08b%08b\n", ipv4Net.Mask[0], ipv4Net.Mask[1], ipv4Net.Mask[2], ipv4Net.Mask[3])
 
-	joinedIPDec, err := IPDecToBinString(ip)
-	if err != nil {
-		return cidraddr, errors.New("IPが不正 ip=" + ip)
-	}
-	ipBin, err := strconv.ParseUint(joinedIPDec, 2, 64)
-	if err != nil {
-		return cidraddr, errors.New("IPが不正 joinedIPDec=" + joinedIPDec)
-	}
-	cidraddr.IPBin = ipBin
-
-	net := joinedIPDec[:cidr]
-	host := joinedIPDec[cidr:]
-	netu, err := strconv.ParseUint(net, 2, 64)
-	if err != nil {
-		return cidraddr, err
-	}
-	hostu, err := strconv.ParseUint(host, 2, 64)
-	if err != nil {
-		return cidraddr, err
-	}
-	cidraddr.Network = netu
-	cidraddr.Host = hostu
-
-	return cidraddr, nil
+	return CIDRAddress{IPDec: "xxx"}, nil
 }
 
 func IPDecToBinString(ip string) (string, error) {
