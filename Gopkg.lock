@@ -18,17 +18,6 @@
   version = "v1.0"
 
 [[projects]]
-  digest = "1:3e290774b62b2e8a304c0596c411d6e0acb48fffce9226f4b4b2f837c6dce11d"
-  name = "github.com/jiro4989/sop"
-  packages = [
-    "cli/command",
-    "file",
-  ]
-  pruneopts = "UT"
-  revision = "7714d903782618917db6d752f8743bf5e583b0eb"
-  version = "v1.2.0"
-
-[[projects]]
   digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
@@ -64,7 +53,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/jiro4989/sop/cli/command",
+    "github.com/spf13/cobra",
     "github.com/stretchr/testify/assert",
   ]
   solver-name = "gps-cdcl"

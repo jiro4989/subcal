@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	"github.com/jiro4989/sop/cli/command"
 )
 
 func init() {
@@ -13,7 +11,7 @@ func init() {
 }
 
 func main() {
-	if err := command.RootCommand.Execute(); err != nil {
+	if err := RootCommand.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
