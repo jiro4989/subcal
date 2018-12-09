@@ -73,17 +73,51 @@ var RootCommand = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println(ip.Format("\t", true, true, true, true, true))
+
+			checkErr := func(err error) {
+				if err != nil {
+					panic(err)
+				}
+			}
+
+			f := cmd.Flags()
+
+			sep, err := f.GetString("delimiter")
+			checkErr(err)
+
+			colorFlag, err := f.GetBool("color")
+			checkErr(err)
+
+			ipv4Flag, err := f.GetBool("ipv4")
+			checkErr(err)
+
+			cidrFlag, err := f.GetBool("cidr")
+			checkErr(err)
+
+			binFlag, err := f.GetBool("bin")
+			checkErr(err)
+
+			maskFlag, err := f.GetBool("mask")
+			checkErr(err)
+
+			if !ipv4Flag && !cidrFlag && !binFlag && !maskFlag {
+				ipv4Flag = true
+				cidrFlag = true
+				binFlag = true
+				maskFlag = true
+			}
+
+			fmt.Println(ip.Format(sep, colorFlag, ipv4Flag, cidrFlag, binFlag, maskFlag))
 		}
 	},
 }
 
 func init() {
 	cobra.OnInitialize()
-	RootCommand.Flags().StringP("sep", "s", "\t", "color")
+	RootCommand.Flags().StringP("delimiter", "d", "\t", "color")
 	RootCommand.Flags().BoolP("color", "c", false, "color")
 	RootCommand.Flags().BoolP("ipv4", "i", false, "color")
-	RootCommand.Flags().BoolP("cidr", "d", false, "color")
+	RootCommand.Flags().BoolP("cidr", "r", false, "color")
 	RootCommand.Flags().BoolP("bin", "b", false, "color")
 	RootCommand.Flags().BoolP("mask", "m", false, "color")
 	RootCommand.Flags().BoolP("noheader", "H", false, "color")
