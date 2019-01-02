@@ -8,20 +8,20 @@ import (
 )
 
 func init() {
-	showCommand.Flags().StringP("delimiter", "d", "\t", "color")
-	showCommand.Flags().BoolP("color", "c", false, "color")
-	showCommand.Flags().BoolP("ipv4", "i", false, "color")
-	showCommand.Flags().BoolP("cidr", "r", false, "color")
-	showCommand.Flags().BoolP("bin", "b", false, "color")
-	showCommand.Flags().BoolP("mask", "m", false, "color")
-	showCommand.Flags().BoolP("header", "H", false, "color")
-	RootCommand.AddCommand(showCommand)
+	listCommand.Flags().StringP("delimiter", "d", "\t", "color")
+	listCommand.Flags().BoolP("color", "c", false, "color")
+	listCommand.Flags().BoolP("ipv4", "i", false, "color")
+	listCommand.Flags().BoolP("cidr", "r", false, "color")
+	listCommand.Flags().BoolP("bin", "b", false, "color")
+	listCommand.Flags().BoolP("mask", "m", false, "color")
+	listCommand.Flags().BoolP("header", "H", false, "color")
+	RootCommand.AddCommand(listCommand)
 }
 
-var showCommand = &cobra.Command{
-	Use:   "show",
-	Short: "show",
-	Long:  "show",
+var listCommand = &cobra.Command{
+	Use:   "list",
+	Short: "list",
+	Long:  "list",
 	Run: func(cmd *cobra.Command, args []string) {
 		checkErr := func(err error) {
 			if err != nil {
