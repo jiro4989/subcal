@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/jiro4989/subcal/command"
 )
 
 func init() {
@@ -11,7 +13,7 @@ func init() {
 }
 
 func main() {
-	if err := RootCommand.Execute(); err != nil {
+	if err := command.RootCommand.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
