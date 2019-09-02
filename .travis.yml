@@ -1,7 +1,9 @@
 language: go
 
-install:
-  - make deps
+env:
+  global:
+    - GO111MODULE=on
+
 script:
   - make test
   - make install
