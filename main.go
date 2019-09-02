@@ -24,7 +24,7 @@ type (
 )
 
 const (
-	doc = `subcal はサブネットマスクを簡単に参照するためのコマンドです。
+	doc = `subcal is a command to calculate subnet mask.
 
 Usage:
 	saubcal [options] <ip>...
@@ -32,15 +32,15 @@ Usage:
 	saubcal -v | --version
 
 Options:
-	-h --help         このヘルプを出力する。
-	-v --version      バージョン情報を出力する。
-	-d --delimiter=<DELIMITER>   delimiter [default:  ]
-	-C --color        delimiter
-	-i --ipv4         delimiter
-	-c --cidr         delimiter
-	-b --bin          delimiter
-	-m --mask         delimiter
-	-n --no-header       delimiter`
+	-h --help                     Print this help.
+	-v --version                  Print version.
+	-d --delimiter=<DELIMITER>    Set field delimiter. [default:  ]
+	-C --color                    Colorize IP address bin.
+	-i --ipv4                     Print IPv4 address.
+	-c --cidr                     Print CIDR.
+	-b --bin                      Print IP address bin.
+	-m --mask                     Print Subnet mask.
+	-n --no-header                Hide header.`
 )
 
 const (
