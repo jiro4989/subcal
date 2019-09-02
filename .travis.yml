@@ -4,6 +4,29 @@ env:
   global:
     - GO111MODULE=on
 
+install:
+  - make bootstrap
+
 script:
-  - make test
+  - go version
+  - make build
   - make install
+  - make test
+  - ./bin/subcal -h
+  - ./bin/subcal -v
+
+before_deploy:
+  - make archive
+
+deploy:
+  provider: releases
+  api_key:
+    secure: rRzWHJG+r9YbzPJ2i7JWMO+5hT3GKXnqCMBfIcrsjP+OeiboJ+K4gjhnLaBJE/w5g29eXEuac1dMfP1NIPW4kQyy7kUBpHtbNFLcpGgIWKY98kY+4bg9rka1iSwVnaK0UR7dTpoyTQbtOyJKszLaQI6dk2xtgEZDtRHjsVtrSsD2f/PpABHvFJTuG9lDl91n3+XMRBvRw2kFwg5Hgzpjr5lJjuH6bAxoukWJXFOTWTEL1znhG9PVSYEz4Dh/BUw0i1+GplK3naOdB5mOK5fK+pvkf63upRFcsceVSPrhRpiRU2B/UJMuVk9/cv6HVhfGlH0maZwwcOf9k3Hyuo8tQ96+EQc7rgZBKR01zuw7bAdFJcad+ORtmYoxC3WGDAqz9YuROKQ++mmUsWkAt05DwiL8I9oFnotWHSlcy770/X7t8IFw1nPAREfiOrly3fXXg+Wslx7WCDOBbn9ZGYnRu4xkLsJ6tYqxAJq8oFt/j7WgIckoj/2STdd9FoedWWiihZgAvf3ln126L6orefqevVCRhOTjIFSigPmrbgNTWde2AGodajUSo9FK/IJgN8ARdrpYIonfNWjEKjZS0Qrkt8hhGtD4noLcJfFCkFs+/O0ZYvUmPcuaI9DlwV1LkmLT+BO0wCqEp0PHIlDdd/fInqC4PMOg7ZxtTUWfgVLWi3M=
+  keep-history: false
+  skip_cleanup: true
+  file:
+    - 'dist/*.tar.gz'
+    - 'dist/*.zip'
+  file_glob: true
+  on:
+    tags: true
