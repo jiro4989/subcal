@@ -20,6 +20,7 @@ type (
 		NoHeader  bool
 		IP        []string `docopt:"<ip>"`
 	}
+	ErrorCode int
 )
 
 const (
@@ -42,18 +43,24 @@ Options:
 	-n --no-header       delimiter`
 )
 
+const (
+	NoError ErrorCode = iota
+	DocoptError
+	ParseCIDRError
+)
+
 func main() {
-	os.Exit(Main(os.Args))
+	os.Exit(int(Main(os.Args)))
 }
 
-func Main(argv []string) int {
+func Main(argv []string) ErrorCode {
 	parser := &docopt.Parser{}
 	args, _ := parser.ParseArgs(doc, argv[1:], Version)
 	config := Config{}
 	err := args.Bind(&config)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		return 1
+		return DocoptError
 	}
 
 	if !config.IPv4 && !config.CIDR && !config.Bin && !config.Mask {
@@ -72,12 +79,12 @@ func Main(argv []string) int {
 	for _, ipcidr := range config.IP {
 		ipaddr, err := ip.ParseCIDR(ipcidr)
 		if err != nil {
-			return 1
+			return ParseCIDRError
 		}
 		fmt.Println(ipaddr.Format(config.Delimiter, config.Color, config.IPv4, config.CIDR, config.Bin, config.Mask))
 	}
 
-	return 0
+	return NoError
 }
 
 func header(sep string, ipv4Flag, cidrFlag, binFlag, maskFlag bool) string {
