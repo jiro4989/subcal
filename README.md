@@ -13,28 +13,6 @@ subcalはサブネットを計算して2進数サブネットマスクを出力�
 * 10進数を2進数に変換
 * ネットワーク部とホスト部の色分け
 
-## ヘルプ
-
-```bash
-subcal is a command to calculate subnet mask.
-
-Usage:
-	saubcal [options] <ip>...
-	saubcal -h | --help
-	saubcal -v | --version
-
-Options:
-	-h --help                     Print this help.
-	-v --version                  Print version.
-	-d --delimiter=<DELIMITER>    Set field delimiter. [default:  ]
-	-C --color                    Colorize IP address bin.
-	-i --ipv4                     Print IPv4 address.
-	-c --cidr                     Print CIDR.
-	-b --bin                      Print IP address bin.
-	-m --mask                     Print Subnet mask.
-	-n --no-header                Hide header.
-```
-
 ## 使い方
 
 ```bash
@@ -83,3 +61,45 @@ IPv4 CIDR Bin Mask
 色付き出力
 
 ![Color option](img/color.png)
+
+## ヘルプ
+
+```bash
+subcal is a command to calculate subnet mask.
+
+Usage:
+	saubcal [options] <ip>...
+	saubcal -h | --help
+	saubcal -v | --version
+
+Options:
+	-h --help                     Print this help.
+	-v --version                  Print version.
+	-d --delimiter=<DELIMITER>    Set field delimiter. [default:  ]
+	-C --color                    Colorize IP address bin.
+	-i --ipv4                     Print IPv4 address.
+	-c --cidr                     Print CIDR.
+	-b --bin                      Print IP address bin.
+	-m --mask                     Print Subnet mask.
+	-n --no-header                Hide header.
+```
+
+## 開発
+
+go version go1.12 linux/amd64
+
+プログラムのビルド。
+
+```bash
+make build
+```
+
+プログラムのテスト。
+
+```bash
+make test
+```
+
+## LICENSE
+
+MIT
