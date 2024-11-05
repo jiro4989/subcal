@@ -9,13 +9,38 @@ import (
 func TestMain(t *testing.T) {
 	type TestData struct {
 		desc string
-		in   []string
+		in   *CmdArgs
 		want ErrorCode
 	}
 	tests := []TestData{
-		{desc: "正常なIP", in: []string{"./bin/subcal", "192.168.255.0/24"}, want: NoError},
-		{desc: "全てのオプション", in: []string{"./bin/subcal", "-d", ",", "-Cicbmn", "192.168.255.0/24"}, want: NoError},
-		{desc: "不正なIP", in: []string{"./bin/subcal", "192a.168.255.0/24"}, want: ParseCIDRError},
+		{
+			desc: "正常系: 正常なIP",
+			in: &CmdArgs{
+				Args: []string{"192.168.255.0/24"},
+			},
+			want: NoError,
+		},
+		{
+			desc: "正常系: 全てのオプション",
+			in: &CmdArgs{
+				Delimiter: ",",
+				Color:     true,
+				IPv4:      true,
+				CIDR:      true,
+				Bin:       true,
+				Mask:      true,
+				NoHeader:  true,
+				Args:      []string{"192.168.255.0/24"},
+			},
+			want: NoError,
+		},
+		{
+			desc: "異常系: 不正なIP",
+			in: &CmdArgs{
+				Args: []string{"192a.168.255.0/24"},
+			},
+			want: ParseCIDRError,
+		},
 		// {desc: "引数不足", in: []string{"./bin/subcal"}, want: DocoptError},
 	}
 	for _, tt := range tests {
