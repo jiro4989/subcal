@@ -1,7 +1,5 @@
 # subcal (subnet calc)
 
-[![Build Status](https://travis-ci.org/jiro4989/subcal.svg?branch=master)](https://travis-ci.org/jiro4989/subcal)
-
 subcalは10進数で記述されたIPアドレス/CIDRから2進数サブネットマスクを算出するコマンドです。
 
 ## Screenshot
