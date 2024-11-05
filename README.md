@@ -84,22 +84,6 @@ Options:
     -n --no-header                Hide header.
 ```
 
-## 開発
-
-go version go1.12 linux/amd64
-
-プログラムのビルド。
-
-```bash
-make build
-```
-
-プログラムのテスト。
-
-```bash
-make test
-```
-
 ## LICENSE
 
 MIT
