@@ -5,21 +5,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/docopt/docopt-go"
 	"github.com/jiro4989/subcal/ip"
 )
 
 type (
-	Config struct {
-		Delimiter string `docopt:"-d,--delimiter"`
-		Color     bool
-		IPv4      bool `docopt:"--ipv4"`
-		CIDR      bool `docopt:"--cidr"`
-		Bin       bool
-		Mask      bool
-		NoHeader  bool
-		IP        []string `docopt:"<ip>"`
-	}
 	ErrorCode int
 )
 
@@ -50,38 +39,30 @@ const (
 )
 
 func main() {
-	os.Exit(int(Main(os.Args)))
+	args := ParseArgs()
+	os.Exit(int(Main(args)))
 }
 
-func Main(argv []string) ErrorCode {
-	parser := &docopt.Parser{}
-	args, _ := parser.ParseArgs(doc, argv[1:], Version)
-	config := Config{}
-	err := args.Bind(&config)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return DocoptError
-	}
-
-	if !config.IPv4 && !config.CIDR && !config.Bin && !config.Mask {
-		config.IPv4 = true
-		config.CIDR = true
-		config.Bin = true
-		config.Mask = true
+func Main(args *CmdArgs) ErrorCode {
+	if !args.IPv4 && !args.CIDR && !args.Bin && !args.Mask {
+		args.IPv4 = true
+		args.CIDR = true
+		args.Bin = true
+		args.Mask = true
 	}
 
 	// ヘッダの出力
-	if !config.NoHeader {
-		fmt.Println(header(config.Delimiter, config.IPv4, config.CIDR, config.Bin, config.Mask))
+	if !args.NoHeader {
+		fmt.Println(header(args.Delimiter, args.IPv4, args.CIDR, args.Bin, args.Mask))
 	}
 
 	// ボディの出力
-	for _, ipcidr := range config.IP {
+	for _, ipcidr := range args.Args {
 		ipaddr, err := ip.ParseCIDR(ipcidr)
 		if err != nil {
 			return ParseCIDRError
 		}
-		fmt.Println(ipaddr.Format(config.Delimiter, config.Color, config.IPv4, config.CIDR, config.Bin, config.Mask))
+		fmt.Println(ipaddr.Format(args.Delimiter, args.Color, args.IPv4, args.CIDR, args.Bin, args.Mask))
 	}
 
 	return NoError
