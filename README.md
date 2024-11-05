@@ -63,23 +63,28 @@ IPv4 CIDR Bin Mask
 ## ヘルプ
 
 ```txt
-subcal is a command to calculate subnet mask.
+subcal is a command to calculate subnet mask
 
 Usage:
-    saubcal [options] <ip>...
-    saubcal -h | --help
-    saubcal -v | --version
+  subcal [OPTIONS] <ip>...
+
+Examples:
+  subcal 10.0.1.0/24
 
 Options:
-    -h --help                     Print this help.
-    -v --version                  Print version.
-    -d --delimiter=<DELIMITER>    Set field delimiter. [default:  ]
-    -C --color                    Colorize IP address bin.
-    -i --ipv4                     Print IPv4 address.
-    -c --cidr                     Print CIDR.
-    -b --bin                      Print IP address bin.
-    -m --mask                     Print Subnet mask.
-    -n --no-header                Hide header.
+  -bin
+        print ipv4 address bin
+  -c    colorize ip address bin
+  -cidr
+        print cidr
+  -d string
+        set field delimiter (default " ")
+  -ipv4
+        print ipv4 address
+  -mask
+        print subnet mask
+  -n    hide header
+  -v    print version
 ```
 
 ## LICENSE
